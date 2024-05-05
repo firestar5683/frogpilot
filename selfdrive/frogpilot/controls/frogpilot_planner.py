@@ -158,15 +158,15 @@ class FrogPilotPlanner:
     if self.aggressive_acceleration:
       distance_factor = np.maximum(lead_distance - (v_ego * t_follow), 1)
       standstill_offset = max(stopping_distance - v_ego, 0)
-      acceleration_offset = np.clip((v_lead - v_ego) + standstill_offset - COMFORT_BRAKE, 1, distance_factor)
+      acceleration_offset = np.clip((v_lead - v_ego) + (standstill_offset * max(v_lead - v_ego, 0)) - COMFORT_BRAKE, 1, distance_factor)
       jerk /= acceleration_offset
       t_follow /= acceleration_offset
 
     # Offset by FrogAi for FrogPilot for a more natural approach to a slower lead
     if self.smoother_braking:
       distance_factor = np.maximum(lead_distance - (v_lead * t_follow), 1)
-      far_lead_offset = max(lead_distance - (v_ego * t_follow) - stopping_distance, 0) if self.smoother_braking_far_lead and v_lead < v_ego else 0
-      braking_offset = np.clip((v_ego - v_lead) + far_lead_offset - COMFORT_BRAKE, 1, distance_factor)
+      far_lead_offset = max(lead_distance - (v_ego * t_follow) - increased_distance, 0) if self.smoother_braking_far_lead else 0
+      braking_offset = np.clip((v_ego - v_lead) + (far_lead_offset * max(v_ego - v_lead, 0)) - COMFORT_BRAKE, 1, distance_factor)
       if self.smoother_braking_jerk:
         jerk *= np.minimum(braking_offset, COMFORT_BRAKE)
       t_follow /= braking_offset
