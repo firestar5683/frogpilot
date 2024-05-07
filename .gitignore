@@ -88,5 +88,3 @@ build/
 
 poetry.toml
 Pipfile
-third_party/maplibre-native-qt/x86_64/lib/libQMapLibre.so
-third_party/acados/larch64/lib/libqpOASES_e.so
