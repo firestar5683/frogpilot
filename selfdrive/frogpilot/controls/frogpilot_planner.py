@@ -146,6 +146,9 @@ class FrogPilotPlanner:
 
     lead_distance = self.lead_one.dRel
     stopping_distance = STOP_DISTANCE + max(self.increased_stopping_distance - v_ego if not trafficModeActive else 0, 0)
+    increased_distance = max(self.increased_stopping_distance - v_ego if not trafficModeActive else 0, 0)
+    lead_distance = self.lead_one.dRel - increased_distance
+    stopping_distance = STOP_DISTANCE + increased_distance
 
     # Offset by FrogAi for FrogPilot for a more natural takeoff with a lead
     if self.aggressive_acceleration and not self.release:
