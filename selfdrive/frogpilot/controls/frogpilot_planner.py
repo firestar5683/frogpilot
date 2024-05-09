@@ -144,8 +144,6 @@ class FrogPilotPlanner:
       jerk = interp(v_ego, TRAFFIC_MODE_BP, self.traffic_mode_jerk)
       t_follow = interp(v_ego, TRAFFIC_MODE_BP, self.traffic_mode_t_follow)
 
-    lead_distance = self.lead_one.dRel
-    stopping_distance = STOP_DISTANCE + max(self.increased_stopping_distance - v_ego if not trafficModeActive else 0, 0)
     increased_distance = max(self.increased_stopping_distance - v_ego if not trafficModeActive else 0, 0)
     lead_distance = self.lead_one.dRel - increased_distance
     stopping_distance = STOP_DISTANCE + increased_distance

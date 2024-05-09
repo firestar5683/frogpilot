@@ -103,7 +103,7 @@ class ManagerProcess(ABC):
     dt = time.monotonic() - self.last_watchdog_time / 1e9
 
     if dt > self.watchdog_max_dt:
-      if (self.watchdog_seen or self.always_watchdog and self.proc.exitcode is not None) and ENABLE_WATCHDOG:
+      if (self.watchdog_seen or self.always_watchdog and not started and self.proc.exitcode is not None) and ENABLE_WATCHDOG:
         cloudlog.error(f"Watchdog timeout for {self.name} (exitcode {self.proc.exitcode}) restarting ({started=})")
         self.restart()
     else:
